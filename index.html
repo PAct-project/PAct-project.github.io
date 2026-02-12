@@ -26,9 +26,12 @@
                   radial-gradient(circle at 80% 60%, rgba(126, 224, 195, 0.1), transparent 40%),
                   #0b1220;
       color: var(--text);
-      display: grid;
-      place-items: center;
-      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+      padding: 24px 24px 48px;
     }
     .frame {
       width: min(780px, 100%);
@@ -38,6 +41,7 @@
       padding: 32px 28px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(8px);
+      transform: translateY(-10px);
     }
     .header {
       display: flex;
@@ -65,6 +69,26 @@
       border: 1px solid rgba(126, 224, 195, 0.4);
       font-size: 13px;
     }
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .github-link:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.18); }
+    .github-icon { width: 18px; height: 18px; fill: currentColor; }
     .card {
       background: var(--card);
       border-radius: 14px;
@@ -99,6 +123,24 @@
       margin: 10px 0 8px;
       border: none;
     }
+    .video-card {
+      width: min(900px, 100%);
+      background: linear-gradient(145deg, rgba(16, 26, 44, 0.95), rgba(16, 26, 44, 0.8));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+    .video-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+      border: 0;
+      border-radius: 10px;
+      background: #060b14;
+      object-fit: cover;
+    }
     @media (max-width: 600px) {
       .header { flex-direction: column; align-items: flex-start; }
       .title { font-size: 24px; }
@@ -113,7 +155,15 @@
         <h1 class="title">PAct: Part-Decomposed Single-View Articulated Object Generation</h1>
         <p class="subtitle">We are refreshing this site and will publish the update by February 28, 2026.</p>
       </div>
-      <span class="pill" id="status-pill">Updating…</span>
+      <div class="actions">
+        <a class="github-link" id="repo-link" href="#" target="_blank" rel="noreferrer noopener">
+          <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+          </svg>
+          GitHub Repo
+        </a>
+        <span class="pill" id="status-pill">Updating…</span>
+      </div>
     </div>
 
     <section class="card">
@@ -121,17 +171,17 @@
         <div>
           <div class="label">Current window</div>
           <div class="value" id="window-text">—</div>
-          <div class="meta" id="window-meta">Set your preferred slot.</div>
+          <div class="meta" id="window-meta"></div>
         </div>
         <div>
-          <div class="label">Time zone</div>
+          <div class="label"></div>
           <div class="value" id="tz-text">—</div>
-          <div class="meta">Keep it explicit to avoid confusion.</div>
+          <div class="meta"></div>
         </div>
         <div>
           <div class="label">Next update</div>
           <div class="value" id="next-update">—</div>
-          <div class="meta">Share when this window will refresh.</div>
+          <div class="meta"></div>
         </div>
       </div>
       <hr class="divider">
@@ -139,15 +189,22 @@
     </section>
   </main>
 
+  <section class="video-card">
+    <video class="video-frame" id="video-frame" title="Project overview video" controls playsinline preload="metadata" autoplay muted></video>
+  </section>
+
   <script>
     // Placeholder data; update the values below to reflect real availability.
     const availability = {
       window: 'Preparing launch details',
-      timezone: 'UTC+8',
       nextUpdate: 'By February 28, 2026',
       status: 'Updating',
       notes: 'Full project page goes live by February 28, 2026. Thanks for your patience.'
     };
+
+    // Set your GitHub repo URL and local video file here.
+    const repoUrl = 'https://github.com/PAct-project/PAct';
+    const videoSrc = 'assets/video/demo.mp4'; // Place your local video next to this HTML or adjust the path
 
     const byId = (id) => document.getElementById(id);
     byId('window-text').textContent = availability.window;
@@ -156,6 +213,8 @@
     byId('notes').textContent = availability.notes;
     byId('status-pill').textContent = availability.status;
     byId('status-pill').style.borderColor = 'rgba(126,224,195,0.6)';
+    byId('repo-link').href = repoUrl;
+    byId('video-frame').src = videoSrc;
   </script>
 </body>
 </html>
